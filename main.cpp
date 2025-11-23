@@ -85,6 +85,7 @@ void write_file(string filename, vector<Animal*>& animals){
             class_name = "Lion";
             mane = lion->mane;
             if(mane) mane_s="yes";
+            else mane_s="no";
             file << class_name << "," << name << "," << age << "," << weight << ",";
             file << mane_s << endl;
         }else if(Elephant* ele = dynamic_cast<Elephant*>(animal)){
@@ -352,7 +353,7 @@ void edit_animal(vector<Animal*>& animals){
     int choice;
     int int_answ;
     bool bool_answ;
-    string string_answer;
+    string string_answer, bool_answ_s;
     int SPACE_DEF = 23;
     string parameter;
     cout << "\nProvide number to edit : ";
@@ -404,7 +405,9 @@ void edit_animal(vector<Animal*>& animals){
         // special parameter
         case 4:{
             if(parameter == "MANE"){
-                cin >> bool_answ;
+                cin >> bool_answ_s;
+                if(bool_answ_s[0] == 'y') bool_answ = true;
+                else bool_answ = false;
 
                 Lion* lion = dynamic_cast<Lion*>(selected_animal);
                 lion->mane = bool_answ;
