@@ -1,3 +1,4 @@
+// includes section
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,6 +7,7 @@
 #include <windows.h>
 using namespace std;
 
+// main class ANIMAL
 class Animal{
 public:
     virtual ~Animal() {}
@@ -22,6 +24,7 @@ public:
     }
 };
 
+// Connected classes Lion, Elephtant, Penguin
 class Lion : public Animal{
 public:
     bool mane;
@@ -64,9 +67,8 @@ public:
     }
 };
 
-
+// function used to add animal
 void add_animal(vector<Animal*>& animals){
-    system("cls");
     int choice; 
 
     cout << "+---------------------------+" << endl;
@@ -131,9 +133,9 @@ void add_animal(vector<Animal*>& animals){
     cout << "+---------------------------+" << endl;
     cout << "|        ANIMAL ADDED !     |" << endl;
     cout << "+---------------------------+" << endl;
-    Sleep(1000);
 }
 
+// support function to build a tui
 string build_mov(int qty){
     string to_return = "";
 
@@ -144,8 +146,8 @@ string build_mov(int qty){
     return to_return;
 }
 
+// show all animals in zoo
 void display_animals(vector<Animal*>& animals){
-    system("cls");
     string name, n_mov, a_mov, w_mov, weight, age;
 
     cout << "+---------------------------+" << endl;
@@ -164,30 +166,33 @@ void display_animals(vector<Animal*>& animals){
         w_mov = build_mov(DEF_MOV_W - weight.length());
         cout << "+---------------------------+" << endl;
         cout << "| NAME : " << name << n_mov << "|" << endl;
-        cout << "+---------------------------+" << endl;
         cout << "| AGE : " << age << a_mov << "|" << endl;
-        cout << "+---------------------------+" << endl;
         cout << "| WEIGHT : " << weight << w_mov << "|" << endl;
-        cout << "+---------------------------+" << endl;
         cout << "+---------------------------+" << endl;
         cout << "|                           |" << endl;
         cout << "+---------------------------+" << endl;
     }
 }
 
+// function to delete animal from zoo
 void delete_animal(vector<Animal*>& animals){
-    system("cls");
-    int DEF_MOV_N = 23;
-    string mov, name;
+
+    int DEF_MOV_N = 22;
+    string mov, name, number;
     cout << "+---------------------------+" << endl;
-    cout << "|        REMOVE ANIMAL      |" << endl;
+    cout << "|       REMOVE ANIMAL       |" << endl;
     cout << "+---------------------------+" << endl;
     
     for(int i = 0; i < animals.size(); ++i){
+        
+        if(i + 1 < 10) number = "0";
+        else number = "";
+
+        number += to_string(i + 1);
         name = animals[i]->name;
         mov = build_mov(DEF_MOV_N - name.length());
         
-        cout << "| " << i + 1 << ") " << name << mov << "|" << endl;
+        cout << "| " << number << ") " << name << mov << "|" << endl;
     }
     cout << "+---------------------------+" << endl;
 
@@ -197,20 +202,183 @@ void delete_animal(vector<Animal*>& animals){
 
     animals.erase(animals.begin() + choice - 1);
 
-    Sleep(1000);
+    cout << "+---------------------------+" << endl;
+    cout << "|      ANIMAL REMOVED!      |" << endl;
+    cout << "+---------------------------+" << endl;
 }
 
-void test(vector<Animal*>& animals){
-    for(Animal* cur : animals){
-        if(Lion* lew = dynamic_cast<Lion*>(cur)){
-            lew->roar();
+// function to use special function for animal
+void call_animal(vector<Animal*>& animals){
+
+    int DEF_MOV_N = 22;
+    string mov, name, number;
+    cout << "+---------------------------+" << endl;
+    cout << "|        CALL ANIMAL        |" << endl;
+    cout << "+---------------------------+" << endl;
+    
+    for(int i = 0; i < animals.size(); ++i){
+        
+        if(i + 1 < 10) number = "0";
+        else number = "";
+
+        number += to_string(i + 1);
+        name = animals[i]->name;
+        mov = build_mov(DEF_MOV_N - name.length());
+        
+        cout << "| " << number << ") " << name << mov << "|" << endl;
+    }
+    cout << "+---------------------------+" << endl;
+
+    int choice;
+    cout << "\nProvide number to call : ";
+    cin >> choice;
+
+    Animal* selected_animal = animals[choice - 1];
+    if(Lion* lion = dynamic_cast<Lion*>(selected_animal)) lion->roar();
+    else if(Penguin* pengu = dynamic_cast<Penguin*>(selected_animal)) pengu->slide();
+    else dynamic_cast<Elephant*>(selected_animal)->trumpet();
+
+    cout << "" << endl;
+    cout << "+---------------------------+" << endl;
+    cout << "|      ANIMAL CALLED !      |" << endl;
+    cout << "+---------------------------+" << endl;
+}
+
+// edit animal method
+void edit_animal(vector<Animal*>& animals){
+
+    int DEF_MOV_N = 22;
+    string mov, name, number;
+    cout << "+---------------------------+" << endl;
+    cout << "|        EDIT ANIMAL        |" << endl;
+    cout << "+---------------------------+" << endl;
+    
+    for(int i = 0; i < animals.size(); ++i){
+        
+        if(i + 1 < 10) number = "0";
+        else number = "";
+
+        number += to_string(i + 1);
+        name = animals[i]->name;
+        mov = build_mov(DEF_MOV_N - name.length());
+        
+        cout << "| " << number << ") " << name << mov << "|" << endl;
+    }
+    cout << "+---------------------------+" << endl;
+    
+    int choice;
+    int int_answ;
+    bool bool_answ;
+    string string_answer;
+    int SPACE_DEF = 23;
+    string parameter;
+    cout << "\nProvide number to edit : ";
+    cin >> choice;
+    Sleep(1000);
+    system("cls");
+    
+    Animal* selected_animal = animals[choice - 1];
+    if(Lion* lion = dynamic_cast<Lion*>(selected_animal)) parameter = "MANE";
+    else if(Penguin* pengu = dynamic_cast<Penguin*>(selected_animal)) parameter = "SPECIES";
+    else if (Elephant* ele = dynamic_cast<Elephant*>(selected_animal)) parameter = "TRUNK LEN";
+    mov = build_mov(SPACE_DEF - parameter.length()) ;
+
+    cout << "+---------------------------+" << endl;
+    cout << "|        EDIT ANIMAL        |" << endl;
+    cout << "+---------------------------+" << endl;
+    cout << "|01) NAME                   |" << endl;
+    cout << "|02) AGE                    |" << endl;
+    cout << "|03) WEIGHT                 |" << endl;
+    cout << "|04) " << parameter << mov << "|" << endl;
+    cout << "+---------------------------+" << endl;
+
+    cout << "Provide number to edit : ";
+    cin >> choice;
+    cout << "Provide new value : ";
+
+    switch (choice){
+        // name
+        case 1:{
+            cin >> string_answer;
+            selected_animal->name = string_answer;
+            break;
         }
+
+        // age
+        case 2:{
+            cin >> int_answ;
+            selected_animal->age = int_answ;
+            break;
+        }
+
+        // weight
+        case 3:{
+            cin >> int_answ;
+            selected_animal->weight = int_answ;
+            break;
+        }
+        
+        // special parameter
+        case 4:{
+            if(parameter == "MANE"){
+                cin >> bool_answ;
+
+                Lion* lion = dynamic_cast<Lion*>(selected_animal);
+                lion->mane = bool_answ;
+            }else if(parameter == "SPECIES"){
+                cin >> string_answer;
+
+                Penguin* pengu = dynamic_cast<Penguin*>(selected_animal);
+                pengu->species = string_answer;
+            }else{
+                cin >> int_answ;
+
+                Elephant* ele = dynamic_cast<Elephant*>(selected_animal);
+                ele->trunk_len = int_answ;
+            }
+        }
+    }
+
+    cout << "+---------------------------+" << endl;
+    cout << "|      ANIMAL EDITTED !     |" << endl;
+    cout << "+---------------------------+" << endl;
+}
+
+// main menu method
+void main_menu(vector<Animal*>& animals){
+    int choice;
+
+    while(true){
+        system("cls");
+        cout << "+---------------------------+" << endl;
+        cout << "|         ZAKOL ZOO         |" << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "|01) ADD ANIMAL             |" << endl;
+        cout << "|02) DISPLAY ALL            |" << endl;
+        cout << "|03) DELETE ANIMAL          |" << endl ;
+        cout << "|04) EDIT ANIMAL            |" << endl ;
+        cout << "|05) CALL ANIMAL            |" << endl ;
+        cout << "|06) EXIT                   |" << endl ;
+        cout << "+---------------------------+" << endl;
+
+        cout << "Provide option number: ";
+        cin >> choice;
+
+        Sleep(1000);
+        system("cls");
+
+        if(choice == 1) add_animal(animals);
+        else if(choice == 2) display_animals(animals);
+        else if(choice == 3) delete_animal(animals);
+        else if(choice == 4) edit_animal(animals);
+        else if(choice == 5) call_animal(animals);
+        else if(choice == 6) return;
+        Sleep(4000);
     }
 }
 
 int main(){
     vector<Animal*> animals;
-    add_animal(animals);
-    add_animal(animals);
+    main_menu(animals);
     return 0;
 }
