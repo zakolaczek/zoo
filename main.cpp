@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <windows.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 // main class ANIMAL
@@ -66,6 +67,43 @@ public:
         cout << "Elephant " << name << " is trumping !" << endl;
     }
 };
+
+// function used to create file from current data about animals
+void write_file(string filename, vector<Animal*>& animals){
+    string class_name, name, species, mane_s;
+    int age, weight, trunk_len;
+    bool mane;
+
+    ofstream file(filename);
+
+    for(Animal* animal : animals){
+        name = animal->name;
+        age = animal->age;
+        weight = animal->weight;
+        
+        if(Lion* lion = dynamic_cast<Lion*>(animal)){
+            class_name = "Lion";
+            mane = lion->mane;
+            if(mane) mane_s="yes";
+            file << class_name << "," << name << "," << age << "," << weight << ",";
+            file << mane_s << endl;
+        }else if(Elephant* ele = dynamic_cast<Elephant*>(animal)){
+            class_name = "Elephant";
+            trunk_len = ele->trunk_len;
+        
+            file << class_name << "," << name << "," << age << "," << weight << ",";
+            file << trunk_len << endl;
+        }else{
+            Penguin* pengu = dynamic_cast<Penguin*>(animal);
+            class_name = "Penguin";
+            species = pengu->species;
+
+            file << class_name << "," << name << "," << age << "," << weight << ",";
+            file << species << endl;
+        }
+    }
+    file.close();
+}
 
 // function used to add animal
 void add_animal(vector<Animal*>& animals){
@@ -133,6 +171,7 @@ void add_animal(vector<Animal*>& animals){
     cout << "+---------------------------+" << endl;
     cout << "|        ANIMAL ADDED !     |" << endl;
     cout << "+---------------------------+" << endl;
+    write_file("baza.txt", animals);
 }
 
 // support function to build a tui
@@ -205,6 +244,8 @@ void delete_animal(vector<Animal*>& animals){
     cout << "+---------------------------+" << endl;
     cout << "|      ANIMAL REMOVED!      |" << endl;
     cout << "+---------------------------+" << endl;
+    write_file("baza.txt", animals);
+
 }
 
 // function to use special function for animal
@@ -342,6 +383,8 @@ void edit_animal(vector<Animal*>& animals){
     cout << "+---------------------------+" << endl;
     cout << "|      ANIMAL EDITTED !     |" << endl;
     cout << "+---------------------------+" << endl;
+    write_file("baza.txt", animals);
+
 }
 
 // main menu method
