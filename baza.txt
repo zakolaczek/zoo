@@ -1,1 +1,3 @@
 Penguin,KOWALSKI,4,40,Cesarski
+Lion,SIMBA,2,23,yes
+Elephant,Dumbo,34,1050,50

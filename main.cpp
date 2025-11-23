@@ -105,6 +105,48 @@ void write_file(string filename, vector<Animal*>& animals){
     file.close();
 }
 
+
+vector<Animal*> read_file(string filename){
+    vector<Animal*> animals;
+
+    ifstream file(filename);
+    string line;
+    char delimiter = ',';
+
+    string class_name, name, species, mane_s, age_s, weight_s, trunk_len_s;
+    int age, weight, trunk_len; 
+    bool mane;
+
+    while(getline(file, line)){
+        stringstream ss(line);
+        
+        getline(ss, class_name, delimiter);
+        getline(ss, name, delimiter);
+        getline(ss, age_s, delimiter);
+        getline(ss, weight_s, delimiter);
+        age = stoi(age_s);
+        weight = stoi(weight_s);
+
+        if(class_name == "Lion"){
+            getline(ss, mane_s, delimiter);
+            
+            if(mane_s == "yes") mane = true;
+            else mane = false;
+
+            animals.push_back(new Lion(name, age, weight, mane));
+        }else if(class_name == "Penguin"){
+            getline(ss, species, delimiter);
+
+            animals.push_back(new Penguin(name, age, weight, species));   
+        }else{
+            getline(ss, trunk_len_s, delimiter);
+            trunk_len = stoi(trunk_len_s);
+            animals.push_back(new Elephant(name, age, weight, trunk_len));
+        }
+    }
+    
+    return animals;
+}
 // function used to add animal
 void add_animal(vector<Animal*>& animals){
     int choice; 
@@ -421,7 +463,7 @@ void main_menu(vector<Animal*>& animals){
 }
 
 int main(){
-    vector<Animal*> animals;
+    vector<Animal*> animals = read_file("baza.txt");;
     main_menu(animals);
     return 0;
 }
